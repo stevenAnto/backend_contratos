@@ -89,6 +89,39 @@ app.get('/personas/:nombre', async (req, res) => {
   }
 });
 
+app.delete('/personas/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const persona = await Persona.findByIdAndDelete(id);
+
+    if (!persona) {
+      return res.status(404).json({ message: 'Persona no encontrada' });
+    }
+
+    res.json({ message: 'Persona eliminada correctamente', persona });
+  } catch (error) {
+    console.error('Error eliminando persona:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+app.delete('/contratos/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const contrato = await Contrato.findByIdAndDelete(id);
+
+    if (!contrato) {
+      return res.status(404).json({ message: 'Contrato no encontrado' });
+    }
+
+    res.json({ message: 'Contrato eliminado correctamente', contrato });
+  } catch (error) {
+    console.error('Error eliminando contrato:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 const buscarIdPersonaPorNombre = async (nombre) => {
   try {
@@ -119,6 +152,7 @@ app.post('/contratos', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
 // Obtener todos los contratos
 app.get('/allcontratos', async (req, res) => {
   try {
